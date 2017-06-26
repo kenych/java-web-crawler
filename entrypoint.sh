@@ -5,5 +5,4 @@ set -e
 
 java -jar lib/crawler-1.0-SNAPSHOT.jar $1 $2 $3
 
-
-sleep 60
+sleep 2000
