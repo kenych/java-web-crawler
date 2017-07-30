@@ -16,16 +16,19 @@ Code is covered by tests and example web server with two pages(crawl.html, crawl
 The code is written in concurrent way and using given number of threads.
 
 To test the application either run CrawlerTest tests or commands below:
-mvn install
-cd target/
-java -jar crawler-1.0-SNAPSHOT.jar http://www.example.com http://www.example.com 5
+Maven
+mvn clean package && java -jar target/crawler-1.0-SNAPSHOT.jar https://github.com/kenych https://github.com/kenych 5
 
+Docker
+Build image locally with maven and docker:
+mvn clean package && docker build  -t web-crawler:local . && docker run --rm  web-crawler:local  https://github.com/kenych https://github.com/kenych 5
 
-Running as docker container:
-go to src/main/container, then
-cp ../../../target/crawler-1.0-SNAPSHOT.jar files
-docker build  -t web-crawler:current .
-docker run  -t web-crawler:current  http://www.example.com http://www.example.com 5
+or with Maven plugin:
+mvn clean package docker:build && docker run --rm  web-crawler:local  https://github.com/kenych https://github.com/kenych 5
+
+Or get it from dockerHub:
+docker run --rm  kayan/web-crawler  https://github.com/kenych https://github.com/kenych 5
+
 
 With regards,
 Kayan A.

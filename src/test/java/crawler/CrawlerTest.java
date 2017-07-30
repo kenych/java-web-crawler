@@ -21,8 +21,9 @@ import org.junit.Test;
 
 public class CrawlerTest {
 
+    public static final int PORT = 8089;
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8081);
+    public WireMockRule wireMockRule = new WireMockRule(PORT);
 
     @Before
     public void setup() throws IOException {
@@ -39,11 +40,11 @@ public class CrawlerTest {
 
     @Test
     public void testVisitSinglePageWithNoLinks() throws IOException, InterruptedException {
-        Page page = new Crawler("http://localhost:8081", 1).visit("http://localhost:8081/crawl2.html");
+        Page page = new Crawler("http://localhost:" + PORT, 1).visit("http://localhost:" + PORT + "/crawl2.html");
 
         System.out.println(page);
 
-        assertThat(page.getLink(), is("http://localhost:8081/crawl2.html"));
+        assertThat(page.getLink(), is("http://localhost:" + PORT + "/crawl2.html"));
         assertThat(page.getError().isPresent(), is(false));
         assertThat(page.getLinks().size(), is(0));
         assertThat(page.getExternalLinks().size(), is(0));
@@ -54,11 +55,11 @@ public class CrawlerTest {
 
     @Test
     public void testVisitPageWithTwoLinksAndOneError() throws IOException, InterruptedException, ExecutionException {
-        List<Page> pages = new Crawler("http://localhost:8081", 2).crawl("http://localhost:8081/crawl.html");
+        List<Page> pages = new Crawler("http://localhost:" + PORT, 2).crawl("http://localhost:" + PORT + "/crawl.html");
 
         System.out.println(pages);
 
-        assertThat(pages.get(0).getLink(), is("http://localhost:8081/crawl.html"));
+        assertThat(pages.get(0).getLink(), is("http://localhost:" + PORT + "/crawl.html"));
         assertThat(pages.get(0).getError().isPresent(), is(false));
         assertThat(pages.get(0).getLinks().size(), is(2));
         assertThat(pages.get(0).getExternalLinks().size(), is(1));
@@ -66,7 +67,7 @@ public class CrawlerTest {
         assertThat(pages.get(0).getScripts().size(), is(0));
         assertThat(pages.get(0).getImports().size(), is(0));
 
-        assertThat(pages.get(1).getLink(), is("http://localhost:8081/crawl2.html"));
+        assertThat(pages.get(1).getLink(), is("http://localhost:" + PORT + "/crawl2.html"));
         assertThat(pages.get(1).getError().isPresent(), is(false));
         assertThat(pages.get(1).getLinks().size(), is(0));
         assertThat(pages.get(1).getExternalLinks().size(), is(0));
@@ -74,7 +75,7 @@ public class CrawlerTest {
         assertThat(pages.get(1).getScripts().size(), is(2));
         assertThat(pages.get(1).getImports().size(), is(1));
 
-        assertThat(pages.get(2).getLink(), is("http://localhost:8081/crawl3.html"));
+        assertThat(pages.get(2).getLink(), is("http://localhost:" + PORT + "/crawl3.html"));
         assertThat(pages.get(2).getError().isPresent(), is(true));
         assertThat(pages.get(2).getLinks().size(), is(0));
         assertThat(pages.get(2).getExternalLinks().size(), is(0));
